@@ -221,6 +221,9 @@ def create_app(config_name=None):
 
     return app
 
+# Top-level instance for WSGI servers (Gunicorn, Render, etc.)
+app = create_app(os.environ.get('FLASK_ENV', 'production'))
+
 if __name__ == '__main__':
     application = create_app('development')
     application.run(host='127.0.0.1', port=5000, debug=True)
