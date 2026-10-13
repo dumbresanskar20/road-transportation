@@ -1,0 +1,362 @@
+[
+  {
+    "id": "R001",
+    "name": "Heavy Traffic Advisory",
+    "category": "Traffic Management",
+    "description": "Identifies heavy traffic congestion and suggests transit mitigations.",
+    "conditions": {
+      "traffic": "Heavy"
+    },
+    "operator": "AND",
+    "recommendation": "Expect prolonged transit delays. Consider verified alternate corridors or defer non-urgent travel until peak congestion subsides.",
+    "explanation": "Heavy traffic volume significantly diminishes travel speeds and creates localized bottlenecks.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R002",
+    "name": "Moderate Traffic Flow Notice",
+    "category": "Traffic Management",
+    "description": "Advises on steady but slightly restricted traffic flow.",
+    "conditions": {
+      "traffic": "Moderate"
+    },
+    "operator": "AND",
+    "recommendation": "Maintain safe headway and anticipate intermittent intersection queuing along regular commute routes.",
+    "explanation": "Moderate traffic permits acceptable travel speeds with brief slowdowns at key interchanges.",
+    "priority": "Low",
+    "enabled": true
+  },
+  {
+    "id": "R003",
+    "name": "Rainy Weather Caution",
+    "category": "Weather Advisory",
+    "description": "Provides safety guidance for driving during rainfall.",
+    "conditions": {
+      "weather": "Rainy"
+    },
+    "operator": "AND",
+    "recommendation": "Turn on low-beam headlights and wipers. Reduce cruising speed by at least 15-20% and double your following gap to prevent hydroplaning.",
+    "explanation": "Rainfall degrades tire-asphalt friction, lengthens braking distances, and impairs driver sightlines.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R004",
+    "name": "Dense Fog Low-Visibility Warning",
+    "category": "Weather Advisory",
+    "description": "Warns of severely restricted visibility due to fog.",
+    "conditions": {
+      "weather": "Foggy"
+    },
+    "operator": "AND",
+    "recommendation": "Activate fog lights and low beams immediately. Avoid overtaking, monitor road lane markings attentively, and pull over safely if forward visibility falls below 50 meters.",
+    "explanation": "Dense fog curtails optical range and spatial depth perception, sharply raising collision risks.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R005",
+    "name": "Slippery Surface Hazard",
+    "category": "Road Safety",
+    "description": "Identifies slick, low-traction road conditions.",
+    "conditions": {
+      "road_condition": "Slippery"
+    },
+    "operator": "AND",
+    "recommendation": "Avoid sudden braking, abrupt steering maneuvers, or rapid acceleration. Employ gentle deceleration and gradual braking.",
+    "explanation": "Low friction coefficient on slick road surfaces leads to skidding and sudden loss of vehicular control.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R006",
+    "name": "Damaged Roadway and Pothole Alert",
+    "category": "Road Safety",
+    "description": "Alerts drivers to rough, damaged road infrastructure.",
+    "conditions": {
+      "road_condition": "Damaged"
+    },
+    "operator": "AND",
+    "recommendation": "Proceed at low speed, remain vigilant for deep potholes and broken tarmac, and keep firm control of the steering wheel to prevent suspension or tire damage.",
+    "explanation": "Pavement degradation and potholes elevate the chance of tire blowouts, rim damage, and abrupt swerving.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R007",
+    "name": "Road Closure Strict Prohibition",
+    "category": "Road Status",
+    "description": "Enforces strict detour directives when roads are closed.",
+    "conditions": {
+      "road_status": "Closed"
+    },
+    "operator": "AND",
+    "recommendation": "DO NOT ENTER. The designated roadway is completely closed to all vehicular traffic. Follow designated official detours and comply with signage or traffic marshals.",
+    "explanation": "A closed road indicates critical safety hazards, structural issues, or regulatory closures. Entry is strictly prohibited.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R008",
+    "name": "Active Work Zone / Construction Advisory",
+    "category": "Road Status",
+    "description": "Guides safe driving through active construction zones.",
+    "conditions": {
+      "road_status": "Under Construction"
+    },
+    "operator": "AND",
+    "recommendation": "Strictly adhere to posted construction zone speed limits, watch for construction personnel and heavy machinery, and prepare for sudden lane merges.",
+    "explanation": "Work zones involve narrowed lanes, unexpected worker movements, uneven road profiles, and dust.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R009",
+    "name": "Vehicle Breakdown Safety Procedure",
+    "category": "Vehicle Assistance",
+    "description": "Provides emergency roadside procedures for disabled vehicles.",
+    "conditions": {
+      "vehicle_condition": "Breakdown"
+    },
+    "operator": "AND",
+    "recommendation": "Engage hazard warning flashers immediately. If vehicle can roll, steer off the active carriageway to the shoulder. Place reflective warning triangles 50 meters behind the vehicle and retreat behind the safety guardrail while contacting roadside assistance.",
+    "explanation": "A disabled vehicle in or near traffic lanes represents an acute collision hazard for occupants and oncoming traffic.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R010",
+    "name": "Low Fuel Reserve Alert",
+    "category": "Vehicle Assistance",
+    "description": "Warns of critical fuel levels and imminent stalling.",
+    "conditions": {
+      "fuel": "Low"
+    },
+    "operator": "AND",
+    "recommendation": "Locate and divert to the nearest operational fueling station immediately. Avoid high-rev acceleration and turn off auxiliary power drains.",
+    "explanation": "Critically low fuel risks unexpected engine stalling in active traffic, power steering loss, and fuel pump damage.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R011",
+    "name": "Traffic Incident / Accident Caution",
+    "category": "Accident and Emergency",
+    "description": "Alerts motorists to nearby reported accidents.",
+    "conditions": {
+      "accident_reported": "Yes"
+    },
+    "operator": "AND",
+    "recommendation": "Exercise extreme vigilance. Reduce speed, avoid rubbernecking, prepare for sudden lane blockages, and ensure a clear corridor for arriving emergency response vehicles.",
+    "explanation": "Accident scenes create sudden tailbacks, debris on asphalt, and pedestrian presence on the roadway.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R012",
+    "name": "Critical Emergency Response Directive",
+    "category": "Accident and Emergency",
+    "description": "Provides primary life-safety emergency guidance.",
+    "conditions": {
+      "emergency_reported": "Yes"
+    },
+    "operator": "AND",
+    "recommendation": "CRITICAL: Prioritize immediate life safety. Ensure all persons are in a secure position away from moving traffic. Dial 112 (National Emergency Helpline) immediately for medical, fire, or police assistance. Yield right-of-way to all emergency sirens.",
+    "explanation": "Active emergency declarations require urgent multi-agency response and immediate notification of emergency services (dial 112 in India).",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R013",
+    "name": "Wet Weather & Heavy Traffic Combined Congestion",
+    "category": "Traffic Management",
+    "description": "Handles compound hazard of heavy congestion during rain.",
+    "conditions": {
+      "traffic": "Heavy",
+      "weather": "Rainy"
+    },
+    "operator": "AND",
+    "recommendation": "Compound risk: Rain combined with heavy traffic dramatically amplifies stop-and-go collision danger. Triple following distance and stay alert to sudden brake lights through spray.",
+    "explanation": "Wet roads increase braking distance by 50% or more, compounding the danger of sudden halts in heavy traffic.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R014",
+    "name": "Slippery Road in Wet Weather (Hydroplaning Hazard)",
+    "category": "Road Safety",
+    "description": "Identifies severe hydroplaning hazard during rain on slick roads.",
+    "conditions": {
+      "road_condition": "Slippery",
+      "weather": "Rainy"
+    },
+    "operator": "AND",
+    "recommendation": "Severe traction loss alert: Wet, slippery road surfaces create acute hydroplaning conditions. Moderate speed below 40 km/h, avoid cruise control, and apply brakes with progressive smoothness.",
+    "explanation": "Water accumulation over slick road surfaces causes loss of tire contact with the asphalt.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R015",
+    "name": "Dense Fog in Heavy Congestion",
+    "category": "Weather Advisory",
+    "description": "Advises on multi-vehicle collision risks in foggy heavy traffic.",
+    "conditions": {
+      "traffic": "Heavy",
+      "weather": "Foggy"
+    },
+    "operator": "AND",
+    "recommendation": "Extreme caution: Dense fog combined with slow, compressed traffic creates chain-collision danger. Rely on illuminated road markers and never follow leading vehicles too closely.",
+    "explanation": "Restricted visibility in tight traffic makes sudden chain reaction collisions extremely likely.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R016",
+    "name": "Damaged Road in Low Visibility",
+    "category": "Road Safety",
+    "description": "Warns of potholes and pavement failures concealed by fog.",
+    "conditions": {
+      "road_condition": "Damaged",
+      "weather": "Foggy"
+    },
+    "operator": "AND",
+    "recommendation": "Severe hazard: Roadway craters and damaged edges cannot be spotted in advance through fog. Drive at walking pace, illuminate fog lights, and scan pavement immediately in front of vehicle hood.",
+    "explanation": "Potholes and structural pavement defects remain invisible in fog until directly under vehicle wheels.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R017",
+    "name": "Low Fuel in Heavy Traffic Gridlock",
+    "category": "Vehicle Assistance",
+    "description": "Warns of vehicle stranding due to fuel depletion in gridlock.",
+    "conditions": {
+      "traffic": "Heavy",
+      "fuel": "Low"
+    },
+    "operator": "AND",
+    "recommendation": "Imminent stranding risk: Extended idling in heavy traffic rapidly depletes remaining reserve fuel. Exit to the nearest service station immediately to avoid engine cutout in live traffic lanes.",
+    "explanation": "Prolonged crawl speeds and stop-start idling consume fuel at elevated hourly rates without generating distance.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R018",
+    "name": "Construction Zone with Heavy Congestion",
+    "category": "Traffic Management",
+    "description": "Manages bottlenecks where work zones intersect heavy volume.",
+    "conditions": {
+      "traffic": "Heavy",
+      "road_status": "Under Construction"
+    },
+    "operator": "AND",
+    "recommendation": "Expect acute bottlenecking at lane drop-offs in the construction zone. Merge early, respect zipper-merge etiquette, and refrain from aggressive lane-swapping.",
+    "explanation": "Reduced lane capacity combined with heavy vehicle density creates sharp compression waves and elevated collision rates at merge bottlenecks.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R019",
+    "name": "Vehicle Breakdown in Construction Work Zone",
+    "category": "Vehicle Assistance",
+    "description": "Guides emergency actions for breakdowns occurring inside work zones.",
+    "conditions": {
+      "vehicle_condition": "Breakdown",
+      "road_status": "Under Construction"
+    },
+    "operator": "AND",
+    "recommendation": "Hazardous work zone breakdown: Turn on hazard indicators, alert work zone safety supervisors, move clear of active machinery paths, and request towing assistance immediately.",
+    "explanation": "A disabled vehicle inside a dynamic construction site impedes work machinery and exposes occupants to industrial hazards.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R020",
+    "name": "Accident Reported on Slippery Roadway",
+    "category": "Accident and Emergency",
+    "description": "Warns of secondary skidding collisions near existing accident scenes.",
+    "conditions": {
+      "accident_reported": "Yes",
+      "road_condition": "Slippery"
+    },
+    "operator": "AND",
+    "recommendation": "Secondary crash hazard: An accident has occurred on slippery pavement. Decelerate smoothly from far upstream to avoid skidding into the wreckage or emergency responders.",
+    "explanation": "Secondary collisions at wet/slippery accident scenes are frequent and often more severe due to diminished stopping ability.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R021",
+    "name": "Inclement Weather Advisory",
+    "category": "Weather Advisory",
+    "description": "Provides general weather advisory for rain or fog conditions.",
+    "conditions": {
+      "weather": ["Rainy", "Foggy"]
+    },
+    "operator": "OR",
+    "recommendation": "Inclement weather alert: Maintain windshield clarity, ensure external lighting is active, and increase following distance for safety.",
+    "explanation": "Either rainfall or fog impairs sensory driving perception and safe stopping envelopes.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R022",
+    "name": "Compromised Surface Traction Hazard",
+    "category": "Road Safety",
+    "description": "Advises on caution when the road is either damaged or slippery.",
+    "conditions": {
+      "road_condition": ["Damaged", "Slippery"]
+    },
+    "operator": "OR",
+    "recommendation": "Compromised road surface detected. Avoid high-speed travel, harsh maneuvers, and remain prepared for unexpected vehicle instability.",
+    "explanation": "Either damaged pavement or slippery surfaces degrade mechanical vehicle traction and control.",
+    "priority": "Medium",
+    "enabled": true
+  },
+  {
+    "id": "R023",
+    "name": "Compound Critical Emergency: Accident & Emergency",
+    "category": "Accident and Emergency",
+    "description": "Coordinates immediate response when both accident and emergency are reported.",
+    "conditions": {
+      "emergency_reported": "Yes",
+      "accident_reported": "Yes"
+    },
+    "operator": "AND",
+    "recommendation": "CRITICAL MULTI-HAZARD EMERGENCY: Serious road incident confirmed. Immediate priority: confirm caller location, dial 112 for immediate ambulance and police response, preserve scene safety, and do not attempt unsafe victim movement unless there is fire danger.",
+    "explanation": "Combined emergency and vehicular collision reports require immediate multi-service emergency dispatch (dial 112 in India) and first-responder prioritization.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R024",
+    "name": "Road Closed in Adverse Weather",
+    "category": "Road Status",
+    "description": "Strict prohibition for road closure compounded with rainfall.",
+    "conditions": {
+      "road_status": "Closed",
+      "weather": "Rainy"
+    },
+    "operator": "AND",
+    "recommendation": "DO NOT PROCEED. The route is closed and heavy rainfall may indicate localized flooding, landslides, or dangerous washout. Seek sheltered detour routes.",
+    "explanation": "Road closures during adverse weather conditions frequently stem from active geo-hazards, flash floods, or severe inundation.",
+    "priority": "High",
+    "enabled": true
+  },
+  {
+    "id": "R025",
+    "name": "Experimental High-Speed Drone Surveillance Advisory",
+    "category": "Traffic Management",
+    "description": "Experimental rule to test disabling mechanics.",
+    "conditions": {
+      "traffic": "Heavy"
+    },
+    "operator": "AND",
+    "recommendation": "Automated aerial drone traffic clearance active.",
+    "explanation": "Experimental rule currently disabled for pilot trials.",
+    "priority": "Low",
+    "enabled": false
+  }
+]

@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% block title %}New Transportation Assessment | Road Transportation Expert System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Breadcrumb & Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-teal-600 text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">New Assessment</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold text-dark mb-0">Transportation Condition Assessment</h3>
+            <p class="text-muted small mb-0">Provide current environmental, infrastructure, and vehicle facts for rule evaluation.</p>
+        </div>
+        <div class="text-muted small bg-white px-3 py-2 border rounded-pill shadow-sm">
+            <i class="bi bi-cpu text-teal-600 me-1"></i> Engine Mode: <strong>Forward-Chaining</strong>
+        </div>
+    </div>
+
+    <!-- Emergency Information Notice -->
+    <div class="alert alert-warning border-warning-subtle shadow-sm mb-4" role="alert">
+        <div class="d-flex gap-3 align-items-center">
+            <i class="bi bi-shield-exclamation text-danger fs-3"></i>
+            <div>
+                <strong class="text-dark">Life Safety & Emergency Precedence:</strong>
+                <span class="text-muted">
+                    If an acute emergency or serious collision is present, dial <strong>112</strong> immediately.
+                    Emergency directives are strictly prioritized over general commuting advice.
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Input Form -->
+    <div class="card card-custom shadow-sm mb-4">
+        <div class="card-header card-header-clean bg-white py-3">
+            <h5 class="fw-bold mb-0 text-navy-900">
+                <i class="bi bi-sliders text-teal-600 me-2"></i>Observed Working Memory Facts
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <form action="{{ url_for('analyze') }}" method="POST" id="assessmentForm" novalidate>
+                <div class="row g-4">
+                    <!-- 1. Traffic Condition -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="traffic" class="form-label form-label-bold">
+                                <i class="bi bi-truck text-teal-600 me-1"></i> Traffic Condition
+                            </label>
+                            <p class="form-help-text">Prevailing vehicular density along the transit corridor.</p>
+                            <select name="traffic" id="traffic" class="form-select form-select-custom {% if errors.get('traffic') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('traffic') %}selected{% endif %}>Select traffic volume...</option>
+                                <option value="Low" {% if form_data.get('traffic') == 'Low' %}selected{% endif %}>Low (Free flow)</option>
+                                <option value="Moderate" {% if form_data.get('traffic') == 'Moderate' %}selected{% endif %}>Moderate (Normal flow)</option>
+                                <option value="Heavy" {% if form_data.get('traffic') == 'Heavy' %}selected{% endif %}>Heavy (Congestion / queues)</option>
+                            </select>
+                            {% if errors.get('traffic') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('traffic') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 2. Weather Condition -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="weather" class="form-label form-label-bold">
+                                <i class="bi bi-cloud-rain text-primary me-1"></i> Weather Condition
+                            </label>
+                            <p class="form-help-text">Atmospheric conditions affecting visibility and surface grip.</p>
+                            <select name="weather" id="weather" class="form-select form-select-custom {% if errors.get('weather') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('weather') %}selected{% endif %}>Select weather condition...</option>
+                                <option value="Clear" {% if form_data.get('weather') == 'Clear' %}selected{% endif %}>Clear (Optimal visibility)</option>
+                                <option value="Rainy" {% if form_data.get('weather') == 'Rainy' %}selected{% endif %}>Rainy (Precipitation active)</option>
+                                <option value="Foggy" {% if form_data.get('weather') == 'Foggy' %}selected{% endif %}>Foggy (Dense low visibility)</option>
+                            </select>
+                            {% if errors.get('weather') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('weather') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 3. Road Surface Condition -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="road_condition" class="form-label form-label-bold">
+                                <i class="bi bi-water text-info me-1"></i> Road Condition
+                            </label>
+                            <p class="form-help-text">Physical state of pavement surface and tire traction.</p>
+                            <select name="road_condition" id="road_condition" class="form-select form-select-custom {% if errors.get('road_condition') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('road_condition') %}selected{% endif %}>Select pavement condition...</option>
+                                <option value="Good" {% if form_data.get('road_condition') == 'Good' %}selected{% endif %}>Good (Dry, intact tarmac)</option>
+                                <option value="Damaged" {% if form_data.get('road_condition') == 'Damaged' %}selected{% endif %}>Damaged (Potholes, ruts)</option>
+                                <option value="Slippery" {% if form_data.get('road_condition') == 'Slippery' %}selected{% endif %}>Slippery (Oil / slick moisture)</option>
+                            </select>
+                            {% if errors.get('road_condition') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('road_condition') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 4. Road Status -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="road_status" class="form-label form-label-bold">
+                                <i class="bi bi-sign-stop text-danger me-1"></i> Road Status
+                            </label>
+                            <p class="form-help-text">Operational availability of the highway corridor.</p>
+                            <select name="road_status" id="road_status" class="form-select form-select-custom {% if errors.get('road_status') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('road_status') %}selected{% endif %}>Select corridor status...</option>
+                                <option value="Open" {% if form_data.get('road_status') == 'Open' %}selected{% endif %}>Open (Clear for traffic)</option>
+                                <option value="Closed" {% if form_data.get('road_status') == 'Closed' %}selected{% endif %}>Closed (Strictly prohibited)</option>
+                                <option value="Under Construction" {% if form_data.get('road_status') == 'Under Construction' %}selected{% endif %}>Under Construction (Work zone)</option>
+                            </select>
+                            {% if errors.get('road_status') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('road_status') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 5. Vehicle Condition -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="vehicle_condition" class="form-label form-label-bold">
+                                <i class="bi bi-car-front text-secondary me-1"></i> Vehicle Condition
+                            </label>
+                            <p class="form-help-text">Operational and mechanical readiness of the vehicle.</p>
+                            <select name="vehicle_condition" id="vehicle_condition" class="form-select form-select-custom {% if errors.get('vehicle_condition') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('vehicle_condition') %}selected{% endif %}>Select vehicle condition...</option>
+                                <option value="Normal" {% if form_data.get('vehicle_condition') == 'Normal' %}selected{% endif %}>Normal (Fully operational)</option>
+                                <option value="Breakdown" {% if form_data.get('vehicle_condition') == 'Breakdown' %}selected{% endif %}>Breakdown (Immobilized / defect)</option>
+                            </select>
+                            {% if errors.get('vehicle_condition') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('vehicle_condition') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 6. Fuel Level -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="fuel" class="form-label form-label-bold">
+                                <i class="bi bi-fuel-pump text-warning me-1"></i> Fuel Level
+                            </label>
+                            <p class="form-help-text">Remaining propulsion energy / range reserve.</p>
+                            <select name="fuel" id="fuel" class="form-select form-select-custom {% if errors.get('fuel') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('fuel') %}selected{% endif %}>Select fuel status...</option>
+                                <option value="Sufficient" {% if form_data.get('fuel') == 'Sufficient' %}selected{% endif %}>Sufficient (Ample range)</option>
+                                <option value="Low" {% if form_data.get('fuel') == 'Low' %}selected{% endif %}>Low (Critical reserve light on)</option>
+                            </select>
+                            {% if errors.get('fuel') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('fuel') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 7. Accident Reported -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="accident_reported" class="form-label form-label-bold">
+                                <i class="bi bi-cone-striped text-danger me-1"></i> Accident Reported
+                            </label>
+                            <p class="form-help-text">Collision or vehicular crash on the route segment.</p>
+                            <select name="accident_reported" id="accident_reported" class="form-select form-select-custom {% if errors.get('accident_reported') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('accident_reported') %}selected{% endif %}>Select incident status...</option>
+                                <option value="No" {% if form_data.get('accident_reported') == 'No' %}selected{% endif %}>No (No crashes observed)</option>
+                                <option value="Yes" {% if form_data.get('accident_reported') == 'Yes' %}selected{% endif %}>Yes (Accident present)</option>
+                            </select>
+                            {% if errors.get('accident_reported') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('accident_reported') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 8. Emergency Reported -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="form-card-section h-100">
+                            <label for="emergency_reported" class="form-label form-label-bold">
+                                <i class="bi bi-hospital text-danger me-1"></i> Emergency Reported
+                            </label>
+                            <p class="form-help-text">Urgent medical, rescue, or hazard emergency.</p>
+                            <select name="emergency_reported" id="emergency_reported" class="form-select form-select-custom {% if errors.get('emergency_reported') %}is-invalid{% endif %}" required>
+                                <option value="" disabled {% if not form_data.get('emergency_reported') %}selected{% endif %}>Select emergency status...</option>
+                                <option value="No" {% if form_data.get('emergency_reported') == 'No' %}selected{% endif %}>No (Standard operation)</option>
+                                <option value="Yes" {% if form_data.get('emergency_reported') == 'Yes' %}selected{% endif %}>Yes (Emergency active)</option>
+                            </select>
+                            {% if errors.get('emergency_reported') %}
+                                <div class="invalid-feedback d-block">{{ errors.get('emergency_reported') }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div class="d-flex flex-wrap align-items-center justify-content-between pt-4 mt-3 border-top gap-3">
+                    <button type="button" class="btn btn-outline-secondary" id="resetFormBtn">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Form
+                    </button>
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-light border">Cancel</a>
+                        <button type="submit" class="btn btn-primary-custom px-4 shadow-sm" id="analyzeBtn">
+                            <i class="bi bi-cpu me-1"></i> Analyze & Evaluate Rules
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

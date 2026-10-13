@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+
+{% block title %}About Project | Road Transportation Expert System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="card card-custom mb-4 border-0" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff;">
+        <div class="card-body p-4 p-md-5">
+            <span class="badge bg-teal-500 text-teal-900 fw-bold px-3 py-2 mb-2" style="background-color: #14b8a6; color: #0f172a;">
+                <i class="bi bi-mortarboard me-1"></i> Academic AI Project Documentation
+            </span>
+            <h2 class="fw-bold text-white mb-2">Rule-Based Expert System for Road Transportation</h2>
+            <p class="text-slate-300 mb-0" style="color: #cbd5e1; max-width: 760px; font-size: 1.05rem;">
+                A classical Artificial Intelligence project showcasing declarative knowledge engineering,
+                forward-chaining deduction, conflict resolution, and transparent explanation facilities.
+            </p>
+        </div>
+    </div>
+
+    <!-- Problem Statement & Objectives -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card card-custom shadow-sm h-100">
+                <div class="card-header card-header-clean bg-white">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-exclamation-triangle text-warning me-2"></i>Problem Statement
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-secondary leading-relaxed">
+                        Modern road transit networks face unpredictable hazards including sudden weather shifts,
+                        heavy vehicular congestion, roadway closures, surface degradation, disabled vehicles, and accidents.
+                        Commuters and logistics operators often struggle to synthesize multiple simultaneous road variables
+                        into prioritized, safe operational decisions.
+                    </p>
+                    <p class="text-secondary mb-0">
+                        This project addresses that challenge by formalizing transport safety heuristics into structured
+                        declarative <strong>IF–THEN production rules</strong>. The forward-chaining inference engine
+                        autonomously matches prevailing road facts against the knowledge base, deriving explainable
+                        and actionable advisories without reliance on opaque neural networks or paid third-party APIs.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card card-custom shadow-sm h-100">
+                <div class="card-header card-header-clean bg-white">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-bullseye text-teal-600 me-2"></i>Core Project Objectives
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-3">
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check-circle-fill text-teal-600 fs-5 mt-1"></i>
+                            <div>
+                                <strong class="text-dark">Knowledge Representation:</strong>
+                                <div class="text-muted small">Formalize road safety domains into modular, extensible JSON-based IF-THEN rules.</div>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check-circle-fill text-teal-600 fs-5 mt-1"></i>
+                            <div>
+                                <strong class="text-dark">Forward-Chaining Inference:</strong>
+                                <div class="text-muted small">Implement a data-driven forward reasoning engine evaluating conjunctions (AND) and disjunctions (OR).</div>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check-circle-fill text-teal-600 fs-5 mt-1"></i>
+                            <div>
+                                <strong class="text-dark">Conflict Resolution & Prioritization:</strong>
+                                <div class="text-muted small">Enforce safety hierarchies where emergency and road closure rules supersede routine advisories.</div>
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check-circle-fill text-teal-600 fs-5 mt-1"></i>
+                            <div>
+                                <strong class="text-dark">Explanation Facility (XAI):</strong>
+                                <div class="text-muted small">Trace and expose precise step-by-step logic demonstrating why each recommendation fired.</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Concepts Demonstrated -->
+    <div class="card card-custom shadow-sm mb-4">
+        <div class="card-header card-header-clean bg-white">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="bi bi-cpu text-teal-600 me-2"></i>Fundamental Artificial Intelligence Concepts Demonstrated
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-3 bg-light rounded-3 border h-100">
+                        <h6 class="fw-bold text-navy-900 mb-2">
+                            <i class="bi bi-boxes text-teal-600 me-1"></i> Knowledge Representation
+                        </h6>
+                        <p class="small text-muted mb-0">
+                            Transportation domain expertise is encoded as declarative production rules with explicit premises, logical operators, and consequents, completely decoupled from procedural code.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-3 bg-light rounded-3 border h-100">
+                        <h6 class="fw-bold text-navy-900 mb-2">
+                            <i class="bi bi-arrow-right-circle text-teal-600 me-1"></i> Forward Chaining
+                        </h6>
+                        <p class="small text-muted mb-0">
+                            A data-driven reasoning strategy starting from known user facts (working memory) and driving forward through rule premises to assert valid conclusions and recommendations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-3 bg-light rounded-3 border h-100">
+                        <h6 class="fw-bold text-navy-900 mb-2">
+                            <i class="bi bi-funnel text-teal-600 me-1"></i> Conflict Resolution
+                        </h6>
+                        <p class="small text-muted mb-0">
+                            When multiple rules activate concurrently, conflict resolution arbitrates output by priority weighting (High &gt; Medium &gt; Low) and deduplication.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-3 bg-light rounded-3 border h-100">
+                        <h6 class="fw-bold text-navy-900 mb-2">
+                            <i class="bi bi-journal-check text-teal-600 me-1"></i> Explanation Facility
+                        </h6>
+                        <p class="small text-muted mb-0">
+                            Addresses the classic expert system requirement for transparency by logging evaluation traces showing each condition clause evaluated to TRUE or FALSE.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-3 bg-light rounded-3 border h-100">
+                        <h6 class="fw-bold text-navy-900 mb-2">
+                            <i class="bi bi-shield-check text-teal-600 me-1"></i> Domain Safety Invariants
+                        </h6>
+                        <p class="small text-muted mb-0">
+                            Ensures contradictory directives cannot co-occur. For example, roads marked as closed can never be recommended as active transit options.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-3 bg-light rounded-3 border h-100">
+                        <h6 class="fw-bold text-navy-900 mb-2">
+                            <i class="bi bi-database-check text-teal-600 me-1"></i> Persistent Working Memory
+                        </h6>
+                        <p class="small text-muted mb-0">
+                            Every assessment episode is serialized and stored in an ACID-compliant SQLite relational database, enabling longitudinal audit trails and empirical analytics.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Architecture Diagram -->
+    <div class="card card-custom shadow-sm mb-4">
+        <div class="card-header card-header-clean bg-white">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="bi bi-diagram-2 text-teal-600 me-2"></i>System Architecture & Dataflow
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <div class="p-4 bg-light rounded-3 border text-center">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white border rounded shadow-sm">
+                            <i class="bi bi-person-workspace text-teal-600 fs-3 d-block mb-1"></i>
+                            <strong class="small text-dark">User / Browser</strong>
+                            <div class="text-muted" style="font-size: 0.75rem;">Input Road Facts via Responsive Form</div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-none d-md-block text-muted">
+                        <i class="bi bi-arrow-right fs-4"></i>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-white border rounded shadow-sm">
+                            <i class="bi bi-cpu text-navy-800 fs-3 d-block mb-1"></i>
+                            <strong class="small text-dark">Flask Controller & Inference Engine</strong>
+                            <div class="text-muted" style="font-size: 0.75rem;">Forward Chaining Matcher &bull; Rule Loader</div>
+                            <div class="mt-2 pt-2 border-top">
+                                <span class="badge bg-secondary-subtle text-secondary small">JSON Knowledge Base ({{ rule_count }} Rules)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-none d-md-block text-muted">
+                        <i class="bi bi-arrow-right fs-4"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white border rounded shadow-sm">
+                            <i class="bi bi-database text-primary fs-3 d-block mb-1"></i>
+                            <strong class="small text-dark">SQLite & Results View</strong>
+                            <div class="text-muted" style="font-size: 0.75rem;">Audit Persistence &bull; Explanation UI &bull; Chart.js</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technology Stack -->
+    <div class="card card-custom shadow-sm mb-4">
+        <div class="card-header card-header-clean bg-white">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="bi bi-layers text-teal-600 me-2"></i>Technology Stack
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 25%;">Layer</th>
+                            <th style="width: 35%;">Technologies Used</th>
+                            <th>Design Rationale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold text-dark">Inference Engine</td>
+                            <td>Python 3 (Standard Library)</td>
+                            <td>Pure, deterministic forward-chaining rule matching with zero external commercial AI API dependencies.</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">Knowledge Base</td>
+                            <td>Structured JSON (`transportation_rules.json`)</td>
+                            <td>Human-readable declarative representation separated entirely from the Python execution engine.</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">Web Backend</td>
+                            <td>Flask 3.x, Jinja2 Templates, Werkzeug</td>
+                            <td>Lightweight, WSGI-compliant microframework providing fast routing and server-side validation.</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">Persistence Layer</td>
+                            <td>SQLite 3, Python `sqlite3` module</td>
+                            <td>Zero-configuration, embedded relational engine with parameterized queries and JSON serialization.</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">User Interface</td>
+                            <td>HTML5, CSS3, Bootstrap 5.3, Bootstrap Icons</td>
+                            <td>Responsive mobile-first layout with high contrast, semantic markup, and custom navy-teal aesthetic.</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">Data Visualization</td>
+                            <td>Chart.js 4.4 (Canvas API)</td>
+                            <td>Client-side responsive rendering for categorical, priority, and timeline assessment data.</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">Automated Testing</td>
+                            <td>Pytest 8.x</td>
+                            <td>Comprehensive test suite covering rule activation, edge conditions, closures, and input validation.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Limitations and Future Work -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card card-custom shadow-sm h-100">
+                <div class="card-header card-header-clean bg-white">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-shield-x text-muted me-2"></i>System Limitations
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="text-secondary small mb-0 ps-3">
+                        <li class="mb-2"><strong>Static Knowledge Scope:</strong> Inference is strictly bounded by the rules configured in the knowledge base; novel situations not covered by rules yield neutral advisories.</li>
+                        <li class="mb-2"><strong>No Live Sensor Integration:</strong> Inputs rely on self-reported facts rather than real-time GPS telemetry, road cameras, or live weather APIs.</li>
+                        <li class="mb-2"><strong>Non-Probabilistic Reasoning:</strong> Uses classical binary logic (True/False) without fuzzy logic certainty factors or Bayesian belief probabilities.</li>
+                        <li><strong>Advisory Nature:</strong> The platform cannot override official traffic police directives or emergency personnel on scene.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card card-custom shadow-sm h-100">
+                <div class="card-header card-header-clean bg-white">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-rocket-takeoff text-teal-600 me-2"></i>Future Enhancements
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="text-secondary small mb-0 ps-3">
+                        <li class="mb-2"><strong>Certainty Factors (MYCIN Model):</strong> Integrate confidence weights [0.0 &ndash; 1.0] for uncertain weather forecasts and ambiguous road conditions.</li>
+                        <li class="mb-2"><strong>Admin Rule Authoring GUI:</strong> Enable authorized domain experts to add, modify, or toggle rules directly through a protected web interface.</li>
+                        <li class="mb-2"><strong>GIS & Map Integration:</strong> Incorporate OpenStreetMap or Leaflet to visualize road closure polygons and high-hazard corridors.</li>
+                        <li><strong>Backward Chaining Goal Verification:</strong> Allow users to test hypotheses (e.g., "Is Route A safe for heavy freight transport?").</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

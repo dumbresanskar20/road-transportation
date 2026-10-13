@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics | Road Transportation Expert System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-teal-600 text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Analytics</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold text-dark mb-0">Transportation Analytics & AI Metrics</h3>
+            <p class="text-muted small mb-0">Empirical distribution of assessments, activated rules, and condition trends derived from SQLite.</p>
+        </div>
+        <div>
+            <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom shadow-sm">
+                <i class="bi bi-plus-circle me-1"></i> New Assessment
+            </a>
+        </div>
+    </div>
+
+    {% if data.total_records == 0 %}
+        <!-- Empty State When Database Has Zero Records -->
+        <div class="card card-custom shadow-sm mb-4">
+            <div class="card-body p-5">
+                <div class="empty-state py-5">
+                    <i class="bi bi-pie-chart empty-state-icon text-muted" style="font-size: 3.5rem;"></i>
+                    <h5 class="fw-bold text-dark mt-3">No Analytics Data Stored Yet</h5>
+                    <p class="text-muted mb-4" style="max-width: 500px; margin: 0 auto;">
+                        Visual charts require assessment history in the database. Perform a few road condition assessments to populate live analytics charts.
+                    </p>
+                    <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom">
+                        <i class="bi bi-play-circle me-1"></i> Run First Assessment
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Active Charts Container -->
+        <div id="analyticsChartsContainer">
+            <!-- Summary Metric Row -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-3">
+                    <div class="metric-card shadow-sm">
+                        <div class="metric-icon-wrap metric-icon-navy">
+                            <i class="bi bi-database"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small fw-medium d-block">Evaluated Records</span>
+                            <h4 class="fw-bold mb-0 text-dark">{{ data.total_records }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="metric-card shadow-sm">
+                        <div class="metric-icon-wrap metric-icon-danger">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small fw-medium d-block">High Priority Alerts</span>
+                            <h4 class="fw-bold mb-0 text-dark">{{ data.priority_distribution.get('High', 0) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="metric-card shadow-sm">
+                        <div class="metric-icon-wrap metric-icon-warning">
+                            <i class="bi bi-shield-exclamation"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small fw-medium d-block">Medium Caution</span>
+                            <h4 class="fw-bold mb-0 text-dark">{{ data.priority_distribution.get('Medium', 0) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="metric-card shadow-sm">
+                        <div class="metric-icon-wrap metric-icon-teal">
+                            <i class="bi bi-lightning-charge"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small fw-medium d-block">Distinct Categories</span>
+                            <h4 class="fw-bold mb-0 text-dark">{{ data.category_distribution | length }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Row 1: Categories & Priorities -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="card card-custom shadow-sm h-100">
+                        <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold text-dark">
+                                <i class="bi bi-diagram-3 text-teal-600 me-2"></i>Recommendations by Category
+                            </span>
+                            <span class="badge bg-light text-muted border">Doughnut</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 280px; position: relative;">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card card-custom shadow-sm h-100">
+                        <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold text-dark">
+                                <i class="bi bi-pie-chart text-danger me-2"></i>Priority Level Distribution
+                            </span>
+                            <span class="badge bg-light text-muted border">Pie</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 280px; position: relative;">
+                                <canvas id="priorityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Row 2: Top Rules & Timeline -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="card card-custom shadow-sm h-100">
+                        <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold text-dark">
+                                <i class="bi bi-bar-chart-steps text-teal-600 me-2"></i>Most Frequently Activated Rules
+                            </span>
+                            <span class="badge bg-light text-muted border">Ranking</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 280px; position: relative;">
+                                <canvas id="topRulesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card card-custom shadow-sm h-100">
+                        <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold text-dark">
+                                <i class="bi bi-activity text-teal-600 me-2"></i>Assessments Activity Timeline
+                            </span>
+                            <span class="badge bg-light text-muted border">Daily Trend</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 280px; position: relative;">
+                                <canvas id="timelineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Row 3: Traffic & Weather Conditions -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="card card-custom shadow-sm h-100">
+                        <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold text-dark">
+                                <i class="bi bi-truck text-primary me-2"></i>Evaluated Traffic Conditions
+                            </span>
+                            <span class="badge bg-light text-muted border">Bar</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 260px; position: relative;">
+                                <canvas id="trafficDistChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card card-custom shadow-sm h-100">
+                        <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold text-dark">
+                                <i class="bi bi-cloud-sun text-info me-2"></i>Evaluated Weather Conditions
+                            </span>
+                            <span class="badge bg-light text-muted border">Bar</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 260px; position: relative;">
+                                <canvas id="weatherDistChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}
