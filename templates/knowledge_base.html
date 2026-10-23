@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Knowledge Base | Road Transportation Expert System{% endblock %}
+{% block title %}Knowledge Base | Rule Based Expert System For Road Transportation{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-0">
@@ -9,18 +9,20 @@
         <div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-1 small">
-                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-teal-600 text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Knowledge Base</li>
                 </ol>
             </nav>
             <h3 class="fw-bold text-dark mb-0">Transportation Rule Base Viewer</h3>
-            <p class="text-muted small mb-0">Catalog of declarative IF–THEN rules driving the forward-chaining inference engine.</p>
+            <p class="text-secondary small mb-0">Production IF–THEN rules catalog driving forward-chaining deduction with dynamic rule expansion.</p>
         </div>
-        <div class="d-flex gap-2">
-            <span class="badge bg-white text-dark border px-3 py-2 shadow-sm d-flex align-items-center gap-2">
-                <i class="bi bi-file-earmark-code text-teal-600"></i>
-                <span>JSON Knowledge Base &bull; <strong>{{ total_rules }} Rules</strong></span>
-            </span>
+        <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-primary" id="aiAuditKbBtn" data-bs-toggle="modal" data-bs-target="#aiAuditModal">
+                <i class="bi bi-stars me-1"></i> Audit Rules with AI
+            </button>
+            <a href="{{ url_for('add_rule') }}" class="btn btn-primary-custom shadow-sm">
+                <i class="bi bi-plus-circle me-1"></i> Add Dynamic Rule
+            </a>
         </div>
     </div>
 
@@ -29,15 +31,15 @@
         <div class="card-body p-3 p-md-4">
             <form method="GET" action="{{ url_for('knowledge_base') }}" class="row g-2 align-items-end">
                 <div class="col-md-5">
-                    <label for="search" class="form-label small fw-semibold text-muted mb-1">Search Rules</label>
+                    <label for="search" class="form-label small fw-bold text-dark mb-1">Search Rules</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-secondary"></i></span>
                         <input type="text" name="search" id="search" class="form-control form-control-custom border-start-0" placeholder="Rule ID, name, or recommendation keyword..." value="{{ search_query }}">
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-3">
-                    <label for="category" class="form-label small fw-semibold text-muted mb-1">Category</label>
+                    <label for="category" class="form-label small fw-bold text-dark mb-1">Category</label>
                     <select name="category" id="category" class="form-select form-select-custom">
                         <option value="All" {% if not category_filter or category_filter == 'All' %}selected{% endif %}>All Categories</option>
                         {% for cat in categories %}
@@ -47,7 +49,7 @@
                 </div>
 
                 <div class="col-sm-6 col-md-2">
-                    <label for="priority" class="form-label small fw-semibold text-muted mb-1">Priority</label>
+                    <label for="priority" class="form-label small fw-bold text-dark mb-1">Priority</label>
                     <select name="priority" id="priority" class="form-select form-select-custom">
                         <option value="All" {% if not priority_filter or priority_filter == 'All' %}selected{% endif %}>All Priorities</option>
                         <option value="High" {% if priority_filter == 'High' %}selected{% endif %}>High</option>
@@ -71,17 +73,22 @@
     <!-- Rules Table -->
     <div class="card card-custom shadow-sm mb-4">
         <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
-            <span class="fw-semibold text-dark">
-                <i class="bi bi-diagram-3 text-teal-600 me-2"></i>Knowledge Base Rules ({{ rules | length }})
+            <span class="fw-bold text-dark">
+                <i class="bi bi-diagram-3 text-primary me-2"></i>Active Knowledge Base Rules ({{ rules | length }})
             </span>
-            <span class="badge bg-light text-muted border">Declarative Production Rules</span>
+            <div class="d-flex gap-2 align-items-center">
+                <span class="badge bg-light text-secondary border">Total Rules: {{ total_rules }}</span>
+                <a href="{{ url_for('add_rule') }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-plus-lg me-1"></i> New Rule
+                </a>
+            </div>
         </div>
         <div class="card-body p-0">
             {% if not rules %}
-                <div class="empty-state py-5">
-                    <i class="bi bi-search empty-state-icon"></i>
+                <div class="empty-state py-5 text-center">
+                    <i class="bi bi-search fs-1 text-muted d-block mb-2"></i>
                     <h6 class="fw-bold text-dark">No Matching Rules Found</h6>
-                    <p class="text-muted small mb-3">No rules matched your search query or filters. Clear your filters to see all rules.</p>
+                    <p class="text-secondary small mb-3">No rules matched your search query or filters. Clear your filters or add a new rule.</p>
                     <a href="{{ url_for('knowledge_base') }}" class="btn btn-sm btn-primary-custom">
                         Clear Filters
                     </a>
@@ -91,28 +98,28 @@
                     <table class="table table-custom align-middle mb-0">
                         <thead>
                             <tr>
-                                <th class="ps-4" style="width: 90px;">Rule ID</th>
+                                <th class="ps-4" style="width: 85px;">Rule ID</th>
                                 <th style="width: 220px;">Rule Name & Category</th>
-                                <th style="width: 260px;">Conditions (IF)</th>
-                                <th>Recommendation (THEN)</th>
+                                <th style="width: 270px;">Conditions (IF Premise)</th>
+                                <th>Recommendation (THEN Action)</th>
                                 <th style="width: 100px;">Priority</th>
-                                <th style="width: 90px;">Status</th>
-                                <th class="text-end pe-4" style="width: 90px;">Action</th>
+                                <th style="width: 90px;">State</th>
+                                <th class="text-end pe-4" style="width: 140px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for rule in rules %}
-                                <tr>
+                                <tr id="rule-row-{{ rule.id }}">
                                     <td class="ps-4">
-                                        <span class="badge bg-navy-custom text-white fw-bold" style="background-color: #1e293b;">
+                                        <span class="badge bg-navy-custom text-white fw-bold">
                                             {{ rule.id }}
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="{{ url_for('rule_details', rule_id=rule.id) }}" class="fw-semibold text-dark text-decoration-none d-block">
+                                        <a href="{{ url_for('rule_details', rule_id=rule.id) }}" class="fw-bold text-dark text-decoration-none d-block">
                                             {{ rule.name }}
                                         </a>
-                                        <small class="badge bg-light text-muted border mt-1">{{ rule.category }}</small>
+                                        <small class="badge bg-light text-secondary border mt-1">{{ rule.category }}</small>
                                     </td>
                                     <td>
                                         <div class="d-flex flex-wrap gap-1 align-items-center">
@@ -138,16 +145,23 @@
                                         <span class="badge-priority-{{ rule.priority | lower }}">{{ rule.priority }}</span>
                                     </td>
                                     <td>
-                                        {% if rule.enabled %}
-                                            <span class="badge bg-success-subtle text-success border border-success-subtle">Active</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Disabled</span>
-                                        {% endif %}
+                                        <button class="btn btn-sm p-0 border-0 toggle-rule-btn" data-rule-id="{{ rule.id }}" title="Click to toggle rule status">
+                                            {% if rule.enabled %}
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle" id="status-badge-{{ rule.id }}">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle" id="status-badge-{{ rule.id }}">Disabled</span>
+                                            {% endif %}
+                                        </button>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="{{ url_for('rule_details', rule_id=rule.id) }}" class="btn btn-sm btn-outline-secondary" title="View Full Rule Specification">
-                                            Details
-                                        </a>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('rule_details', rule_id=rule.id) }}" class="btn btn-outline-secondary" title="View Rule Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-outline-danger delete-rule-btn" data-rule-id="{{ rule.id }}" data-rule-name="{{ rule.name }}" title="Delete this rule">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -158,4 +172,137 @@
         </div>
     </div>
 </div>
+
+<!-- AI Knowledge Base Audit Modal -->
+<div class="modal fade" id="aiAuditModal" tabindex="-1" aria-labelledby="aiAuditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold text-dark" id="aiAuditModalLabel">
+                    <i class="bi bi-stars text-primary me-2"></i>AI Knowledge Base Audit
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div id="auditSpinner" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-secondary small mt-3">AI engine is examining {{ total_rules }} production rules for domain coverage, conflicts, and gaps...</p>
+                </div>
+                <div id="auditOutput" class="ai-output-box d-none"></div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary-custom btn-sm" id="reRunAuditBtn">
+                    <i class="bi bi-arrow-repeat me-1"></i> Re-Run Audit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Rule state toggle via AJAX
+    document.querySelectorAll('.toggle-rule-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const ruleId = btn.getAttribute('data-rule-id');
+            try {
+                const resp = await fetch(`/api/rules/${ruleId}/toggle`, { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) {
+                    const badge = document.getElementById(`status-badge-${ruleId}`);
+                    if (data.enabled) {
+                        badge.className = 'badge bg-success-subtle text-success border border-success-subtle';
+                        badge.textContent = 'Active';
+                    } else {
+                        badge.className = 'badge bg-secondary-subtle text-secondary border border-secondary-subtle';
+                        badge.textContent = 'Disabled';
+                    }
+                }
+            } catch (e) {
+                alert('Error toggling rule: ' + e);
+            }
+        });
+    });
+
+    // Rule deletion via AJAX
+    document.querySelectorAll('.delete-rule-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const ruleId = btn.getAttribute('data-rule-id');
+            const ruleName = btn.getAttribute('data-rule-name');
+            if (!confirm(`Are you sure you want to permanently delete rule '${ruleId}: ${ruleName}'?`)) {
+                return;
+            }
+
+            try {
+                const resp = await fetch(`/api/rules/${ruleId}/delete`, { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) {
+                    const row = document.getElementById(`rule-row-${ruleId}`);
+                    if (row) row.remove();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (e) {
+                alert('Error deleting rule: ' + e);
+            }
+        });
+    });
+
+    // Simple markdown renderer
+    function renderMarkdown(md) {
+        if (!md) return '';
+        let html = md
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/^### (.*$)/gim, '<h5 class="fw-bold text-dark mt-3 mb-2">$1</h5>')
+            .replace(/^## (.*$)/gim, '<h4 class="fw-bold text-dark mt-3 mb-2">$1</h4>')
+            .replace(/^# (.*$)/gim, '<h3 class="fw-bold text-dark mt-3 mb-2">$1</h3>')
+            .replace(/^\> (.*$)/gim, '<blockquote class="border-start border-4 border-primary bg-light p-2 ps-3 my-2 text-dark small">$1</blockquote>')
+            .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+            .replace(/`([^`]+)`/gim, '<code class="bg-light px-1 py-0.5 rounded text-primary">$1</code>')
+            .replace(/^\s*\n\*/gim, '<ul>\n*')
+            .replace(/^[\*\-] (.*$)/gim, '<li>$1</li>')
+            .replace(/^\d+\.\s(.*$)/gim, '<li>$1</li>');
+        html = html.replace(/(<li>.*<\/li>)/gms, '<ul class="ps-3 mb-2">$1</ul>');
+        html = html.replace(/\n\n/g, '<br>');
+        return html;
+    }
+
+    async function loadAudit() {
+        const spinner = document.getElementById('auditSpinner');
+        const output = document.getElementById('auditOutput');
+        spinner.classList.remove('d-none');
+        output.classList.add('d-none');
+
+        try {
+            const resp = await fetch('{{ url_for("api_analyze_kb") }}', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({})
+            });
+            const data = await resp.json();
+            spinner.classList.add('d-none');
+            output.classList.remove('d-none');
+            output.innerHTML = renderMarkdown(data.analysis || data.error);
+        } catch (e) {
+            spinner.classList.add('d-none');
+            output.classList.remove('d-none');
+            output.innerHTML = `<div class="alert alert-danger small">Error running AI audit: ${e.message}</div>`;
+        }
+    }
+
+    const aiAuditBtn = document.getElementById('aiAuditKbBtn');
+    if (aiAuditBtn) {
+        aiAuditBtn.addEventListener('click', loadAudit);
+    }
+
+    const reRunAuditBtn = document.getElementById('reRunAuditBtn');
+    if (reRunAuditBtn) {
+        reRunAuditBtn.addEventListener('click', loadAudit);
+    }
+</script>
 {% endblock %}

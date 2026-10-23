@@ -1,8 +1,8 @@
-# Road Transportation Expert System
+# Rule Based Expert System For Road Transportation
 
-An intelligent, rule-based advisory web application demonstrating the core tenets of **Artificial Intelligence (AI)**: declarative knowledge representation, IF–THEN production rules, forward-chaining deduction, rule conflict resolution, and explainable AI (XAI).
+An intelligent, dynamic rule-based advisory web application demonstrating the core tenets of **Artificial Intelligence (AI)**: declarative knowledge representation, dynamic IF–THEN production rules authoring, forward-chaining deduction, rule conflict resolution, explainable AI (XAI), and AI integration.
 
-This project runs **without any paid APIs, external cloud dependencies, or black-box machine learning models**. The reasoning logic is powered entirely by a custom, explainable Python inference engine operating over a structured JSON knowledge base and SQLite history database.
+The reasoning logic is powered by a high-performance, explainable Python inference engine operating over a structured JSON knowledge base, SQLite assessment history, and generative AI analysis.
 
 ---
 
@@ -12,11 +12,14 @@ Road transport networks frequently encounter multiple compounding hazards—incl
 
 Human commuters and dispatchers often find it challenging to synthesize multiple simultaneous road variables into prioritized, safe actions. 
 
-This **Road Transportation Expert System** solves this challenge by:
+This **Rule Based Expert System For Road Transportation** solves this challenge by:
 1. Formalizing road safety heuristics and traffic management protocols into modular **IF–THEN production rules**.
-2. Applying **forward-chaining deduction** across user-reported facts (working memory).
-3. Enforcing safety invariants (e.g., road closures strictly prohibit entry; emergencies take precedence).
-4. Generating **transparent reasoning traces** through an integrated Explanation Facility.
+2. Allowing users to **dynamically create, toggle, and manage rules** directly from the web interface.
+3. Providing **convenient dropdown inputs** for all road condition questions and instant preset scenarios.
+4. Applying **forward-chaining deduction** across user-reported facts (working memory) to compile tailored reports.
+5. Integrating **AI** to deeply analyze reports, audit knowledge base coverage, and provide interactive advisory consultations.
+6. Enforcing safety hierarchies (e.g., road closures strictly prohibit entry; emergencies take precedence).
+7. Generating **transparent reasoning traces** through an integrated Explanation Facility.
 
 ---
 
@@ -74,14 +77,16 @@ Road Transportation/
 ├── templates/                 # Jinja2 HTML Templates
 │   ├── base.html              # Shared layout with responsive sidebar
 │   ├── dashboard.html         # Live metrics, charts, and recent activity
-│   ├── assessment.html        # Interactive road facts input form
-│   ├── results.html           # Advisory report & explanation traces
+│   ├── assessment.html        # Interactive road facts dropdown input form
+│   ├── results.html           # Advisory report, explanation traces & AI
 │   ├── history.html           # Historical assessments log with filters
 │   ├── assessment_details.html# Deep inspection of historical records
-│   ├── knowledge_base.html    # Rule catalog viewer and filter
+│   ├── knowledge_base.html    # Rule catalog viewer, toggle & deletion
+│   ├── add_rule.html          # Dynamic rule authoring interface
+│   ├── ai_assistant.html      # AI Transportation Consultant
 │   ├── rule_details.html      # Individual rule IF-THEN logic inspector
 │   ├── analytics.html         # Empirical analytics with 6 Chart.js charts
-│   ├── about.html             # Academic project documentation & architecture
+│   ├── about.html             # System architecture & AI documentation
 │   └── 404.html               # Custom 404 error page
 │
 ├── static/                    # Frontend Assets
@@ -220,6 +225,6 @@ Open your browser and navigate to: **[http://127.0.0.1:5000](http://127.0.0.1:50
 
 ---
 
-## 9. Academic Integrity & Safety Disclaimer
+## 9. Official Safety Notice & Operational Disclaimer
 
-This system is an academic software project demonstrating Artificial Intelligence rule-based systems. It is not an authorized replacement for official road transport authorities, police advisories, or professional emergency responders. In real emergencies, always dial **112** (or your local emergency helpline).
+This expert system provides automated transportation safety advisories deduced through deterministic forward-chaining rules and generative AI analysis. It is not an authorized replacement for official road transport authorities, police advisories, or professional emergency responders. In real emergencies, always dial **112** (or your local emergency helpline).

@@ -25,7 +25,7 @@ def test_dashboard_route_empty_db(client):
     """Case 15: Dashboard handles empty database statistics gracefully without errors."""
     response = client.get('/')
     assert response.status_code == 200
-    assert b"Road Transportation Expert System" in response.data
+    assert b"Rule Based Expert System For Road Transportation" in response.data
 
 def test_assessment_form_route(client):
     """Assessment form renders all required field controls."""
@@ -133,9 +133,76 @@ def test_about_page_route(client):
     """About project page displays problem statement, objectives, and architecture."""
     resp = client.get('/about')
     assert resp.status_code == 200
-    assert b"Rule-Based Expert System for Road Transportation" in resp.data
+    assert b"Rule Based Expert System For Road Transportation" in resp.data
     assert b"Forward Chaining" in resp.data
     assert b"Explanation Facility" in resp.data
+
+def test_add_dynamic_rule_route_and_evaluation(client):
+    """Dynamic rule creation expands knowledge base and immediately influences evaluation."""
+    # 1. Fetch add rule form
+    form_resp = client.get('/rules/add')
+    assert form_resp.status_code == 200
+    assert b"Add Dynamic Production Rule" in form_resp.data
+
+    # 2. Add a dynamic rule via POST API
+    new_rule_payload = {
+        "id": "R999",
+        "name": "Dynamic Fog & Low Fuel Alert",
+        "category": "Weather Advisory",
+        "description": "Dynamic rule testing combined fog and fuel depletion.",
+        "conditions": {
+            "weather": "Foggy",
+            "fuel": "Low"
+        },
+        "operator": "AND",
+        "recommendation": "Emergency refueling protocol active: Pull into nearest station immediately under fog guidance.",
+        "explanation": "Low fuel during dense fog risks complete vehicular immobilization in hazardous low-visibility corridor.",
+        "priority": "High",
+        "enabled": True
+    }
+    api_resp = client.post('/api/rules/add', json=new_rule_payload)
+    assert api_resp.status_code == 201
+    assert api_resp.json['success'] is True
+
+    # 3. Test that evaluation immediately activates this dynamic rule!
+    eval_data = {
+        'traffic': 'Low',
+        'weather': 'Foggy',
+        'road_condition': 'Good',
+        'road_status': 'Open',
+        'vehicle_condition': 'Normal',
+        'fuel': 'Low',
+        'accident_reported': 'No',
+        'emergency_reported': 'No'
+    }
+    eval_resp = client.post('/analyze', data=eval_data, follow_redirects=True)
+    assert eval_resp.status_code == 200
+    assert b"R999" in eval_resp.data
+    assert b"Emergency refueling protocol active" in eval_resp.data
+
+    # Clean up test rule
+    client.post('/api/rules/R999/delete')
+
+def test_ai_endpoints(client):
+    """AI endpoints for key configuration, report analysis, KB audit, and chat."""
+    # Test setting key in session
+    set_key_resp = client.post('/api/ai/set-key', json={'api_key': 'test-fake-key-12345'})
+    assert set_key_resp.status_code == 200
+    assert set_key_resp.json['success'] is True
+
+    # Test clearing key
+    clear_resp = client.post('/api/ai/set-key', json={'api_key': ''})
+    assert clear_resp.status_code == 200
+
+    # Test assistant page route
+    asst_resp = client.get('/ai-assistant')
+    assert asst_resp.status_code == 200
+    assert b"AI Transportation Expert Consultant" in asst_resp.data
+
+    # Test AI chat endpoint in offline heuristic mode
+    chat_resp = client.post('/api/ai/chat', json={'message': 'How does the expert system handle heavy rain?'})
+    assert chat_resp.status_code == 200
+    assert 'reply' in chat_resp.json
 
 def test_404_error_page(client):
     """Non-existent URLs trigger clean 404 response."""

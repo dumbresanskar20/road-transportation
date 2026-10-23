@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Assessment Results | Road Transportation Expert System{% endblock %}
+{% block title %}Assessment Results | Rule Based Expert System For Road Transportation{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-0">
@@ -9,23 +9,23 @@
         <div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-1 small">
-                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-teal-600 text-decoration-none">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url_for('assessment') }}" class="text-teal-600 text-decoration-none">New Assessment</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('assessment') }}" class="text-primary text-decoration-none">New Assessment</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Advisory Report</li>
                 </ol>
             </nav>
             <div class="d-flex align-items-center gap-2">
                 <h3 class="fw-bold text-dark mb-0">Advisory Assessment Report</h3>
-                <span class="badge bg-secondary-subtle text-secondary border font-monospace">{{ assessment.id }}</span>
+                <span class="badge bg-secondary-subtle text-dark border font-monospace">{{ assessment.id }}</span>
             </div>
-            <small class="text-muted"><i class="bi bi-clock me-1"></i> Completed on {{ assessment.timestamp }}</small>
+            <small class="text-secondary"><i class="bi bi-clock me-1"></i> Evaluated on {{ assessment.timestamp }}</small>
         </div>
         <div class="d-flex gap-2">
             <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom shadow-sm">
                 <i class="bi bi-plus-circle me-1"></i> Perform Another Assessment
             </a>
             <a href="{{ url_for('history') }}" class="btn btn-outline-secondary">
-                <i class="bi bi-clock-history me-1"></i> View in History
+                <i class="bi bi-clock-history me-1"></i> History Log
             </a>
             <button onclick="window.print()" class="btn btn-light border" title="Print advisory report">
                 <i class="bi bi-printer"></i>
@@ -42,7 +42,7 @@
                 </div>
                 <div>
                     <h5 class="fw-bold text-danger mb-1">
-                        CRITICAL SAFETY NOTICE: EMERGENCY / INCIDENT REPORTED
+                        CRITICAL SAFETY NOTICE: EMERGENCY / COLLISION REPORTED
                     </h5>
                     <p class="mb-2 text-dark">
                         Immediate life-safety measures override all standard navigation and commuting advice.
@@ -52,7 +52,7 @@
                         <span class="badge bg-danger text-white fs-6 px-3 py-2 rounded-pill shadow-sm">
                             <i class="bi bi-telephone-fill me-1"></i> Dial 112 (National Emergency Helpline)
                         </span>
-                        <small class="text-muted">Yield immediate right-of-way to all sirens and first responder vehicles.</small>
+                        <small class="text-secondary">Yield immediate right-of-way to all sirens and first responder vehicles.</small>
                     </div>
                 </div>
             </div>
@@ -84,10 +84,10 @@
         <div class="card-body p-4">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div>
-                    <span class="text-muted small text-uppercase fw-bold tracking-wide">Inference Engine Conclusion</span>
+                    <span class="text-secondary small text-uppercase fw-bold tracking-wide">Inference Engine Conclusion</span>
                     <h4 class="fw-bold text-dark mt-1 mb-2">{{ assessment.summary }}</h4>
                     <div class="d-flex flex-wrap gap-2 align-items-center">
-                        <span class="text-muted small">Overall Hazard Level:</span>
+                        <span class="text-secondary small">Overall Hazard Level:</span>
                         {% if assessment.highest_priority == 'High' %}
                             <span class="badge-priority-high">High Priority Hazard</span>
                         {% elif assessment.highest_priority == 'Medium' %}
@@ -95,16 +95,58 @@
                         {% elif assessment.highest_priority == 'Low' %}
                             <span class="badge-priority-low">Low Priority Advisory</span>
                         {% else %}
-                            <span class="badge-priority-neutral">Neutral (No Hazard Configured)</span>
+                            <span class="badge-priority-neutral">Neutral (Standard Flow)</span>
                         {% endif %}
-                        <span class="text-muted small ms-2">&bull; Activated Rules: <strong>{{ assessment.rule_count }}</strong></span>
+                        <span class="text-secondary small ms-2">&bull; Activated Rules: <strong class="text-dark">{{ assessment.rule_count }}</strong></span>
                     </div>
                 </div>
                 <div class="text-md-end">
-                    <div class="d-inline-flex align-items-center gap-2 p-2 px-3 bg-light rounded-pill border">
-                        <i class="bi bi-shield-check text-teal-600 fs-5"></i>
-                        <span class="small fw-semibold text-dark">Verified Rule Deductions</span>
-                    </div>
+                    <button class="btn btn-outline-primary shadow-sm" id="triggerAiAnalysisBtn">
+                        <i class="bi bi-stars me-1"></i> Analyze Report with AI
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Intelligent Analysis Card (Interactive) -->
+    <div class="card card-custom ai-card shadow-sm mb-4" id="aiReportCard">
+        <div class="ai-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <div class="p-2 bg-white rounded-circle shadow-sm text-primary">
+                    <i class="bi bi-stars fs-5"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold text-dark mb-0">AI Transportation Expert Analysis</h6>
+                    <small class="text-secondary">Generative Multi-Factor Synthesis & Driver Psychology</small>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-light border" id="refreshAiBtn" title="Re-analyze with AI">
+                    <i class="bi bi-arrow-repeat"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <!-- Spinner / Loading State -->
+            <div id="aiLoadingSpinner" class="text-center py-4 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading AI Analysis...</span>
+                </div>
+                <p class="text-secondary small mt-2 mb-0">Connecting to AI Engine & Synthesizing Recommendations...</p>
+            </div>
+
+            <!-- Content Area -->
+            <div id="aiAnalysisOutput" class="ai-output-box">
+                <div class="text-center py-3">
+                    <i class="bi bi-lightbulb fs-2 text-primary d-block mb-2"></i>
+                    <h6 class="fw-bold text-dark">Unlock AI Expert Insights</h6>
+                    <p class="text-secondary small mb-3" style="max-width: 500px; margin: 0 auto;">
+                        Click the button below to have the AI perform deep behavioral analysis, routing recommendations, and emergency contingencies based on this assessment report.
+                    </p>
+                    <button class="btn btn-primary-custom px-4 shadow-sm" id="startAiBtn">
+                        <i class="bi bi-stars me-1"></i> Run AI Analysis
+                    </button>
                 </div>
             </div>
         </div>
@@ -116,50 +158,50 @@
             <div class="card card-custom shadow-sm h-100">
                 <div class="card-header card-header-clean bg-white">
                     <h6 class="fw-bold text-dark mb-0">
-                        <i class="bi bi-card-checklist text-teal-600 me-2"></i>Evaluated Working Facts
+                        <i class="bi bi-card-checklist text-primary me-2"></i>Evaluated Working Facts
                     </h6>
                 </div>
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush small">
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Traffic Condition:</span>
-                            <span class="fw-semibold text-dark">{{ assessment.input_facts.get('traffic') }}</span>
+                            <span class="text-secondary">Traffic Condition:</span>
+                            <span class="fw-bold text-dark">{{ assessment.input_facts.get('traffic') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Weather Condition:</span>
-                            <span class="fw-semibold text-dark">{{ assessment.input_facts.get('weather') }}</span>
+                            <span class="text-secondary">Weather Condition:</span>
+                            <span class="fw-bold text-dark">{{ assessment.input_facts.get('weather') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Road Surface:</span>
-                            <span class="fw-semibold text-dark">{{ assessment.input_facts.get('road_condition') }}</span>
+                            <span class="text-secondary">Road Surface:</span>
+                            <span class="fw-bold text-dark">{{ assessment.input_facts.get('road_condition') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Roadway Status:</span>
-                            <span class="fw-semibold {% if assessment.input_facts.get('road_status') == 'Closed' %}text-danger{% else %}text-dark{% endif %}">
+                            <span class="text-secondary">Roadway Status:</span>
+                            <span class="fw-bold {% if assessment.input_facts.get('road_status') == 'Closed' %}text-danger{% else %}text-dark{% endif %}">
                                 {{ assessment.input_facts.get('road_status') }}
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Vehicle State:</span>
-                            <span class="fw-semibold {% if assessment.input_facts.get('vehicle_condition') == 'Breakdown' %}text-danger{% else %}text-dark{% endif %}">
+                            <span class="text-secondary">Vehicle State:</span>
+                            <span class="fw-bold {% if assessment.input_facts.get('vehicle_condition') == 'Breakdown' %}text-danger{% else %}text-dark{% endif %}">
                                 {{ assessment.input_facts.get('vehicle_condition') }}
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Fuel Level:</span>
-                            <span class="fw-semibold {% if assessment.input_facts.get('fuel') == 'Low' %}text-warning{% else %}text-dark{% endif %}">
+                            <span class="text-secondary">Fuel Level:</span>
+                            <span class="fw-bold {% if assessment.input_facts.get('fuel') == 'Low' %}text-warning{% else %}text-dark{% endif %}">
                                 {{ assessment.input_facts.get('fuel') }}
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Accident Reported:</span>
-                            <span class="fw-semibold {% if assessment.input_facts.get('accident_reported') == 'Yes' %}text-danger{% else %}text-dark{% endif %}">
+                            <span class="text-secondary">Accident Reported:</span>
+                            <span class="fw-bold {% if assessment.input_facts.get('accident_reported') == 'Yes' %}text-danger{% else %}text-dark{% endif %}">
                                 {{ assessment.input_facts.get('accident_reported') }}
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <span class="text-muted">Emergency Declared:</span>
-                            <span class="fw-semibold {% if assessment.input_facts.get('emergency_reported') == 'Yes' %}text-danger{% else %}text-dark{% endif %}">
+                            <span class="text-secondary">Emergency Declared:</span>
+                            <span class="fw-bold {% if assessment.input_facts.get('emergency_reported') == 'Yes' %}text-danger{% else %}text-dark{% endif %}">
                                 {{ assessment.input_facts.get('emergency_reported') }}
                             </span>
                         </li>
@@ -180,14 +222,14 @@
                     <h6 class="fw-bold text-dark mb-0">
                         <i class="bi bi-lightbulb text-warning me-2"></i>Actionable Recommendations ({{ assessment.recommendations | length }})
                     </h6>
-                    <span class="badge bg-light text-muted border">Priority Ranked</span>
+                    <span class="badge bg-light text-secondary border">Priority Ranked</span>
                 </div>
                 <div class="card-body p-3 p-md-4">
                     {% if not assessment.recommendations %}
-                        <div class="empty-state py-4">
-                            <i class="bi bi-shield-check text-success empty-state-icon" style="font-size: 2.5rem;"></i>
+                        <div class="empty-state py-4 text-center">
+                            <i class="bi bi-shield-check text-success fs-1 mb-2"></i>
                             <h6 class="fw-bold text-dark">No Hazard Advisories Triggered</h6>
-                            <p class="text-muted small mb-0">
+                            <p class="text-secondary small mb-0">
                                 The supplied condition facts did not trigger any specific hazard rule in the knowledge base.
                                 <br>
                                 <em>Disclaimer: The system cannot guarantee road safety; always obey traffic laws.</em>
@@ -198,11 +240,11 @@
                             <div class="recommendation-card priority-{{ rec.priority | lower }} mb-3">
                                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
                                     <div class="d-flex align-items-center gap-2">
-                                        <span class="badge bg-navy-custom text-white fw-bold px-2 py-1" style="background-color: #1e293b;">
+                                        <span class="badge bg-navy-custom text-white fw-bold px-2 py-1">
                                             {{ rec.rule_id }}
                                         </span>
                                         <span class="fw-bold text-dark">{{ rec.rule_name }}</span>
-                                        <span class="badge bg-light text-muted border small">{{ rec.category }}</span>
+                                        <span class="badge bg-light text-secondary border small">{{ rec.category }}</span>
                                     </div>
                                     <div>
                                         {% if rec.priority == 'High' %}
@@ -217,11 +259,11 @@
                                 <h6 class="fw-semibold text-dark mb-2" style="line-height: 1.45;">
                                     {{ rec.recommendation }}
                                 </h6>
-                                <p class="text-muted small mb-2">
+                                <p class="text-secondary small mb-2">
                                     <strong>AI Rationale:</strong> {{ rec.explanation }}
                                 </p>
                                 <div class="d-flex flex-wrap gap-1 mt-2">
-                                    <small class="text-muted me-1">Triggered by:</small>
+                                    <small class="text-secondary me-1">Triggered by:</small>
                                     {% for k, v in rec.matched_conditions.items() %}
                                         <span class="badge bg-light text-dark border small">
                                             {{ k }} = <strong>{{ v }}</strong>
@@ -238,18 +280,18 @@
             <div class="card card-custom shadow-sm">
                 <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
                     <h6 class="fw-bold text-dark mb-0">
-                        <i class="bi bi-journal-code text-teal-600 me-2"></i>Explanation Facility (Inference Audit Trail)
+                        <i class="bi bi-journal-code text-primary me-2"></i>Explanation Facility (Inference Audit Trail)
                     </h6>
-                    <span class="badge bg-teal-50 text-teal-700 border border-teal-200">Explainable AI</span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Explainable AI</span>
                 </div>
                 <div class="card-body p-3 p-md-4">
-                    <p class="text-muted small mb-3">
+                    <p class="text-secondary small mb-3">
                         The explanation facility exposes the forward-chaining reasoning process, demonstrating
                         how working memory facts matched condition premises to fire conclusions.
                     </p>
 
                     {% if not assessment.explanations %}
-                        <div class="alert alert-light border small text-muted mb-0">
+                        <div class="alert alert-light border small text-secondary mb-0">
                             No rules were triggered for this evaluation; therefore, no condition evaluation traces exist.
                         </div>
                     {% else %}
@@ -258,19 +300,19 @@
                                 <div class="accordion-item border rounded-3 mb-2 overflow-hidden">
                                     <h2 class="accordion-header" id="heading{{ trace.rule_id }}">
                                         <button class="accordion-button collapsed py-2 px-3 bg-light text-dark fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ trace.rule_id }}" aria-expanded="false" aria-controls="collapse{{ trace.rule_id }}">
-                                            <span class="badge bg-dark me-2">{{ trace.rule_id }}</span>
-                                            {{ trace.rule_name }} &mdash; <small class="text-muted ms-1">Operator: {{ trace.operator }}</small>
+                                            <span class="badge bg-secondary text-white me-2">{{ trace.rule_id }}</span>
+                                            {{ trace.rule_name }} &mdash; <small class="text-secondary ms-1">Operator: {{ trace.operator }}</small>
                                         </button>
                                     </h2>
                                     <div id="collapse{{ trace.rule_id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ trace.rule_id }}" data-bs-parent="#explanationAccordion">
                                         <div class="accordion-body p-3">
                                             <div class="mb-2">
-                                                <small class="text-muted d-block mb-1 fw-bold">1. Rule Description & Category:</small>
+                                                <small class="text-secondary d-block mb-1 fw-bold">1. Rule Description & Category:</small>
                                                 <p class="small text-dark mb-0">{{ trace.description }} (Category: <em>{{ trace.category }}</em>)</p>
                                             </div>
 
                                             <div class="mb-2">
-                                                <small class="text-muted d-block mb-1 fw-bold">2. Precondition Evaluations:</small>
+                                                <small class="text-secondary d-block mb-1 fw-bold">2. Precondition Clause Evaluations:</small>
                                                 <div class="trace-box">
                                                     {% for cond in trace.condition_evaluations %}
                                                         <div class="trace-line">
@@ -282,12 +324,12 @@
                                             </div>
 
                                             <div class="mb-2">
-                                                <small class="text-muted d-block mb-1 fw-bold">3. Logical Synthesis:</small>
-                                                <p class="small text-dark mb-0">{{ trace.operator_summary }} &rarr; <strong>{{ trace.conclusion }}</strong></p>
+                                                <small class="text-secondary d-block mb-1 fw-bold">3. Logical Synthesis:</small>
+                                                <p class="small text-dark mb-0">{{ trace.operator_summary }} &rarr; <strong class="text-primary">{{ trace.conclusion }}</strong></p>
                                             </div>
 
                                             <div>
-                                                <small class="text-muted d-block mb-1 fw-bold">4. Fired Recommendation:</small>
+                                                <small class="text-secondary d-block mb-1 fw-bold">4. Fired Recommendation:</small>
                                                 <div class="p-2 bg-light border rounded small text-dark">
                                                     {{ trace.recommendation }}
                                                 </div>
@@ -306,11 +348,85 @@
     <!-- Official Advisory Disclaimer -->
     <div class="card card-custom bg-light border mb-4">
         <div class="card-body p-3 text-center">
-            <small class="text-muted">
-                <strong>Academic Notice & Safety Disclaimer:</strong> This expert system provides automated guidance based on predefined rule heuristics.
-                It is not a substitute for official road transport authorities, highway police, or professional emergency response personnel. Always comply with live on-road instructions.
+            <small class="text-secondary">
+                <strong>Official Safety Notice & Operational Disclaimer:</strong> This expert system provides automated transportation safety advisories deduced through deterministic forward-chaining rules and AI analysis. Always comply with live on-road instructions, highway police, and emergency responders.
             </small>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple markdown to HTML parser for AI responses
+    function renderMarkdown(md) {
+        if (!md) return '';
+        let html = md
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/^### (.*$)/gim, '<h5 class="fw-bold text-dark mt-3 mb-2">$1</h5>')
+            .replace(/^## (.*$)/gim, '<h4 class="fw-bold text-dark mt-3 mb-2">$1</h4>')
+            .replace(/^# (.*$)/gim, '<h3 class="fw-bold text-dark mt-3 mb-2">$1</h3>')
+            .replace(/^\> (.*$)/gim, '<blockquote class="border-start border-4 border-primary bg-light p-2 ps-3 my-2 text-dark small">$1</blockquote>')
+            .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+            .replace(/`([^`]+)`/gim, '<code class="bg-light px-1 py-0.5 rounded text-primary">$1</code>')
+            .replace(/^\s*\n\*/gim, '<ul>\n*')
+            .replace(/^[\*\-] (.*$)/gim, '<li>$1</li>')
+            .replace(/^\d+\.\s(.*$)/gim, '<li>$1</li>');
+
+        // Wrap list items
+        html = html.replace(/(<li>.*<\/li>)/gms, '<ul class="ps-3 mb-2">$1</ul>');
+        html = html.replace(/\n\n/g, '<br>');
+        return html;
+    }
+
+    async function fetchAiAnalysis() {
+        const spinner = document.getElementById('aiLoadingSpinner');
+        const outputDiv = document.getElementById('aiAnalysisOutput');
+        spinner.classList.remove('d-none');
+        outputDiv.classList.add('d-none');
+
+        try {
+            const resp = await fetch('{{ url_for("api_analyze_report") }}', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ assessment_id: '{{ assessment.id }}' })
+            });
+            const data = await resp.json();
+            spinner.classList.add('d-none');
+            outputDiv.classList.remove('d-none');
+
+            if (data.success) {
+                outputDiv.innerHTML = renderMarkdown(data.analysis);
+            } else {
+                outputDiv.innerHTML = `
+                    <div class="alert alert-danger py-2 small mb-2">
+                        <strong>AI Analysis Notice:</strong> ${data.error || 'Unable to connect to AI engine.'}
+                    </div>
+                    <div>${renderMarkdown(data.analysis || '')}</div>
+                `;
+            }
+        } catch (e) {
+            spinner.classList.add('d-none');
+            outputDiv.classList.remove('d-none');
+            outputDiv.innerHTML = `<div class="alert alert-danger small">Error generating AI analysis: ${e.message}</div>`;
+        }
+    }
+
+    const startAiBtn = document.getElementById('startAiBtn');
+    if (startAiBtn) startAiBtn.addEventListener('click', fetchAiAnalysis);
+
+    const triggerAiBtn = document.getElementById('triggerAiAnalysisBtn');
+    if (triggerAiBtn) {
+        triggerAiBtn.addEventListener('click', () => {
+            document.getElementById('aiReportCard').scrollIntoView({ behavior: 'smooth' });
+            fetchAiAnalysis();
+        });
+    }
+
+    const refreshAiBtn = document.getElementById('refreshAiBtn');
+    if (refreshAiBtn) refreshAiBtn.addEventListener('click', fetchAiAnalysis);
+</script>
 {% endblock %}

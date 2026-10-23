@@ -293,7 +293,10 @@
     "category": "Weather Advisory",
     "description": "Provides general weather advisory for rain or fog conditions.",
     "conditions": {
-      "weather": ["Rainy", "Foggy"]
+      "weather": [
+        "Rainy",
+        "Foggy"
+      ]
     },
     "operator": "OR",
     "recommendation": "Inclement weather alert: Maintain windshield clarity, ensure external lighting is active, and increase following distance for safety.",
@@ -307,7 +310,10 @@
     "category": "Road Safety",
     "description": "Advises on caution when the road is either damaged or slippery.",
     "conditions": {
-      "road_condition": ["Damaged", "Slippery"]
+      "road_condition": [
+        "Damaged",
+        "Slippery"
+      ]
     },
     "operator": "OR",
     "recommendation": "Compromised road surface detected. Avoid high-speed travel, harsh maneuvers, and remain prepared for unexpected vehicle instability.",

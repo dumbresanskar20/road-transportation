@@ -1,34 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard | Road Transportation Expert System{% endblock %}
+{% block title %}Dashboard | Rule Based Expert System For Road Transportation{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-0">
-    <!-- Welcome Header & CTA -->
-    <div class="card card-custom mb-4 border-0" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff;">
+    <!-- Welcome Header & CTA (Light Theme Hero Banner) -->
+    <div class="card card-custom hero-banner-light mb-4 shadow-sm">
         <div class="card-body p-4 p-md-5">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <span class="badge bg-teal-500 text-teal-900 fw-bold px-3 py-2 mb-2" style="background-color: #14b8a6; color: #0f172a;">
+                    <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-2 mb-2 border border-primary-subtle">
                         <i class="bi bi-shield-check me-1"></i> Intelligent Safety Advisory
                     </span>
-                    <h2 class="fw-bold mb-2 text-white">Road Transportation Expert System</h2>
-                    <p class="text-slate-300 mb-4" style="color: #cbd5e1; max-width: 680px; font-size: 1.05rem;">
+                    <h2 class="fw-bold mb-2 text-dark">Rule Based Expert System For Road Transportation</h2>
+                    <p class="text-secondary mb-4" style="max-width: 680px; font-size: 1.05rem;">
                         An artificial intelligence rule-based advisory platform evaluating road infrastructure,
-                        weather hazards, traffic density, and vehicle states through forward-chaining deduction.
+                        weather hazards, traffic density, and vehicle states through forward-chaining deduction with dynamic rule expansion and AI integration.
                     </p>
                     <div class="d-flex flex-wrap gap-2">
                         <a href="{{ url_for('assessment') }}" class="btn btn-primary-custom btn-lg shadow-sm">
                             <i class="bi bi-play-circle me-1"></i> Start New Assessment
                         </a>
-                        <a href="{{ url_for('knowledge_base') }}" class="btn btn-outline-light btn-lg">
-                            <i class="bi bi-diagram-3 me-1"></i> Inspect Knowledge Base
+                        <a href="{{ url_for('add_rule') }}" class="btn btn-outline-primary btn-lg bg-white">
+                            <i class="bi bi-plus-circle me-1"></i> Add Dynamic Rule
+                        </a>
+                        <a href="{{ url_for('ai_assistant') }}" class="btn btn-outline-secondary btn-lg bg-white">
+                            <i class="bi bi-stars me-1"></i> AI Advisor
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-4 d-none d-lg-block text-center">
-                    <div class="p-3 rounded-circle bg-white bg-opacity-10 d-inline-block">
-                        <i class="bi bi-signpost-split text-teal-400" style="font-size: 5.5rem; color: #2dd4bf;"></i>
+                    <div class="p-4 rounded-4 bg-white border shadow-sm d-inline-block">
+                        <i class="bi bi-signpost-2-fill text-primary" style="font-size: 5rem;"></i>
                     </div>
                 </div>
             </div>
@@ -39,11 +42,11 @@
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-xl-3">
             <div class="metric-card shadow-sm">
-                <div class="metric-icon-wrap metric-icon-navy">
+                <div class="metric-icon-wrap metric-icon-blue">
                     <i class="bi bi-journal-check"></i>
                 </div>
                 <div>
-                    <span class="text-muted small fw-medium d-block">Total Assessments</span>
+                    <span class="text-secondary small fw-bold d-block">Total Assessments</span>
                     <h3 class="fw-bold mb-0 text-dark">{{ stats.total_assessments }}</h3>
                 </div>
             </div>
@@ -55,7 +58,7 @@
                     <i class="bi bi-bell"></i>
                 </div>
                 <div>
-                    <span class="text-muted small fw-medium d-block">Advisories Triggered</span>
+                    <span class="text-secondary small fw-bold d-block">Advisories Triggered</span>
                     <h3 class="fw-bold mb-0 text-dark">{{ stats.advisories_count }}</h3>
                 </div>
             </div>
@@ -67,7 +70,7 @@
                     <i class="bi bi-exclamation-triangle"></i>
                 </div>
                 <div>
-                    <span class="text-muted small fw-medium d-block">High Priority Hazards</span>
+                    <span class="text-secondary small fw-bold d-block">High Priority Hazards</span>
                     <h3 class="fw-bold mb-0 text-dark">{{ stats.priority_counts.get('High', 0) }}</h3>
                 </div>
             </div>
@@ -75,12 +78,12 @@
 
         <div class="col-sm-6 col-xl-3">
             <div class="metric-card shadow-sm">
-                <div class="metric-icon-wrap metric-icon-warning">
-                    <i class="bi bi-cpu"></i>
+                <div class="metric-icon-wrap metric-icon-purple">
+                    <i class="bi bi-diagram-3"></i>
                 </div>
                 <div>
-                    <span class="text-muted small fw-medium d-block">Knowledge Base Rules</span>
-                    <h3 class="fw-bold mb-0 text-dark">25 Active</h3>
+                    <span class="text-secondary small fw-bold d-block">Knowledge Base Rules</span>
+                    <h3 class="fw-bold mb-0 text-dark">Active Rules</h3>
                 </div>
             </div>
         </div>
@@ -92,17 +95,17 @@
         <div class="col-lg-6">
             <div class="card card-custom h-100 shadow-sm">
                 <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
-                    <span class="fw-semibold text-dark">
-                        <i class="bi bi-pie-chart text-teal-600 me-2"></i>Recommendations by Category
+                    <span class="fw-bold text-dark">
+                        <i class="bi bi-pie-chart text-primary me-2"></i>Recommendations by Category
                     </span>
-                    <span class="badge bg-light text-muted border">Live SQLite</span>
+                    <span class="badge bg-light text-secondary border">Live SQLite</span>
                 </div>
-                <div class="card-body d-flex flex-column justify-content-center">
+                <div class="card-body d-flex flex-column justify-content-center p-4">
                     {% if stats.is_empty or not stats.category_distribution %}
-                        <div class="empty-state py-5">
-                            <i class="bi bi-bar-chart-line empty-state-icon"></i>
+                        <div class="empty-state py-5 text-center">
+                            <i class="bi bi-bar-chart-line text-muted fs-1 d-block mb-2"></i>
                             <h6 class="fw-bold text-dark">No Category Records Yet</h6>
-                            <p class="text-muted small mb-3">Execute your first transportation assessment to view real distribution data.</p>
+                            <p class="text-secondary small mb-3">Execute your first transportation assessment to view real distribution data.</p>
                             <a href="{{ url_for('assessment') }}" class="btn btn-sm btn-primary-custom">
                                 <i class="bi bi-plus-circle me-1"></i> Perform Assessment
                             </a>
@@ -120,17 +123,17 @@
         <div class="col-lg-6">
             <div class="card card-custom h-100 shadow-sm">
                 <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
-                    <span class="fw-semibold text-dark">
+                    <span class="fw-bold text-dark">
                         <i class="bi bi-lightning-charge text-warning me-2"></i>Most Frequently Activated Rules
                     </span>
-                    <a href="{{ url_for('knowledge_base') }}" class="small text-teal-600 text-decoration-none">View All Rules &rarr;</a>
+                    <a href="{{ url_for('knowledge_base') }}" class="small text-primary text-decoration-none fw-bold">View All Rules &rarr;</a>
                 </div>
                 <div class="card-body p-0">
                     {% if stats.is_empty or not stats.top_rules %}
-                        <div class="empty-state py-5">
-                            <i class="bi bi-clock-history empty-state-icon"></i>
+                        <div class="empty-state py-5 text-center">
+                            <i class="bi bi-clock-history text-muted fs-1 d-block mb-2"></i>
                             <h6 class="fw-bold text-dark">No Activated Rules Yet</h6>
-                            <p class="text-muted small mb-3">Once assessments are run, rules that match conditions will appear here ranked by frequency.</p>
+                            <p class="text-secondary small mb-3">Once assessments are run, rules that match conditions will appear here ranked by frequency.</p>
                             <a href="{{ url_for('assessment') }}" class="btn btn-sm btn-primary-custom">
                                 Run First Assessment
                             </a>
@@ -140,17 +143,17 @@
                             {% for rule_stat in stats.top_rules %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center py-3 px-4">
                                     <div class="d-flex align-items-center gap-3">
-                                        <span class="badge bg-navy-custom px-2 py-1 text-white fw-bold" style="background-color: #1e293b;">
+                                        <span class="badge bg-navy-custom px-2 py-1 text-white fw-bold">
                                             {{ rule_stat.rule_id }}
                                         </span>
                                         <div>
-                                            <a href="{{ url_for('rule_details', rule_id=rule_stat.rule_id) }}" class="fw-semibold text-dark text-decoration-none d-block">
+                                            <a href="{{ url_for('rule_details', rule_id=rule_stat.rule_id) }}" class="fw-bold text-dark text-decoration-none d-block">
                                                 Rule {{ rule_stat.rule_id }} Details
                                             </a>
-                                            <small class="text-muted">Triggered by inference engine</small>
+                                            <small class="text-secondary">Triggered by inference engine</small>
                                         </div>
                                     </div>
-                                    <span class="badge bg-teal-50 text-teal-700 border border-teal-200 px-3 py-2 rounded-pill fw-bold" style="background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4;">
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-bold">
                                         {{ rule_stat.count }} {% if rule_stat.count == 1 %}activation{% else %}activations{% endif %}
                                     </span>
                                 </div>
@@ -165,19 +168,19 @@
     <!-- Recent Assessments Table -->
     <div class="card card-custom shadow-sm mb-4">
         <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
-            <span class="fw-semibold text-dark">
-                <i class="bi bi-clock-history text-secondary me-2"></i>Recent Assessment History
+            <span class="fw-bold text-dark">
+                <i class="bi bi-clock-history text-primary me-2"></i>Recent Assessment History
             </span>
-            <a href="{{ url_for('history') }}" class="small text-teal-600 text-decoration-none">
+            <a href="{{ url_for('history') }}" class="small text-primary text-decoration-none fw-bold">
                 Browse Complete History &rarr;
             </a>
         </div>
         <div class="card-body p-0">
             {% if stats.is_empty or not stats.recent_assessments %}
-                <div class="empty-state py-5">
-                    <i class="bi bi-inbox empty-state-icon"></i>
+                <div class="empty-state py-5 text-center">
+                    <i class="bi bi-inbox text-muted fs-1 d-block mb-2"></i>
                     <h6 class="fw-bold text-dark">Assessment History is Empty</h6>
-                    <p class="text-muted small mb-3">No transportation assessments have been performed yet in this installation.</p>
+                    <p class="text-secondary small mb-3">No transportation assessments have been performed yet in this system.</p>
                     <a href="{{ url_for('assessment') }}" class="btn btn-sm btn-primary-custom">
                         <i class="bi bi-plus-circle me-1"></i> Begin First Assessment
                     </a>
@@ -200,12 +203,12 @@
                         <tbody>
                             {% for item in stats.recent_assessments %}
                                 <tr>
-                                    <td class="ps-4 fw-semibold text-dark">
-                                        <a href="{{ url_for('results', assessment_id=item.id) }}" class="text-decoration-none text-teal-700">
+                                    <td class="ps-4 fw-bold text-dark">
+                                        <a href="{{ url_for('results', assessment_id=item.id) }}" class="text-decoration-none text-primary">
                                             {{ item.id }}
                                         </a>
                                     </td>
-                                    <td class="text-muted small">{{ item.timestamp }}</td>
+                                    <td class="text-secondary small">{{ item.timestamp }}</td>
                                     <td>
                                         <span class="badge bg-light text-dark border">{{ item.traffic }}</span>
                                     </td>
@@ -233,7 +236,7 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <span class="fw-semibold text-dark">{{ item.rule_count }}</span>
+                                        <span class="fw-bold text-dark">{{ item.rule_count }}</span>
                                     </td>
                                     <td class="text-end pe-4">
                                         <a href="{{ url_for('results', assessment_id=item.id) }}" class="btn btn-sm btn-outline-secondary">
@@ -264,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 labels: Object.keys(catData),
                 datasets: [{
                     data: Object.values(catData),
-                    backgroundColor: ['#0d9488', '#1e293b', '#d97706', '#dc2626', '#2563eb', '#06b6d4'],
+                    backgroundColor: ['#0284c7', '#0d9488', '#d97706', '#dc2626', '#7c3aed', '#059669'],
                     borderWidth: 2,
                     borderColor: '#ffffff'
                 }]

@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Transportation Consultant | Rule Based Expert System For Road Transportation{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-primary text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">AI Consultant</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold text-dark mb-0">AI Transportation Expert Consultant</h3>
+            <p class="text-secondary small mb-0">Interactive AI reasoning, domain audits, and dynamic rule recommendation.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Left Column: Interactive Chat Consultant -->
+        <div class="col-lg-7">
+            <div class="card card-custom shadow-sm mb-4">
+                <div class="card-header card-header-clean bg-white d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-chat-dots-fill text-primary fs-5"></i>
+                        <h6 class="fw-bold text-dark mb-0">Interactive Road Transportation AI Advisor</h6>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
+                        <i class="bi bi-stars me-1"></i> Live Generative AI
+                    </span>
+                </div>
+                <div class="card-body p-4 d-flex flex-column" style="min-height: 480px;">
+                    <!-- Chat Messages Log Container -->
+                    <div id="chatMessages" class="flex-grow-1 overflow-auto p-3 mb-3 border rounded bg-light" style="max-height: 420px;">
+                        <div class="d-flex align-items-start gap-2 mb-3">
+                            <div class="p-2 bg-primary text-white rounded-circle shadow-sm" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">
+                                <i class="bi bi-stars"></i>
+                            </div>
+                            <div class="bg-white p-3 rounded-3 shadow-sm border text-dark small" style="max-width: 85%;">
+                                <strong>AI Transportation Advisor:</strong><br>
+                                Hello! I am your AI Transportation Consultant. I can help analyze road situations, explain expert system IF–THEN rules, optimize routing tactics, and suggest new production rules for your knowledge base. How can I assist you today?
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input Form -->
+                    <form id="aiChatForm" class="d-flex gap-2">
+                        <input type="text" id="userChatInput" class="form-control form-control-custom" placeholder="Ask about road conditions, travel safety, rule logic, or emergency protocols..." required autocomplete="off">
+                        <button type="submit" class="btn btn-primary-custom px-4" id="sendChatBtn">
+                            <i class="bi bi-send-fill me-1"></i> Send
+                        </button>
+                    </form>
+
+                    <!-- Quick Suggestions -->
+                    <div class="d-flex flex-wrap gap-1 mt-3 align-items-center">
+                        <small class="text-secondary me-1">Quick prompts:</small>
+                        <button type="button" class="btn btn-sm btn-light border py-0 px-2 small quick-prompt" data-text="What safety protocols apply when driving on damaged slippery roads during heavy fog?">
+                            Fog & Damaged Roads
+                        </button>
+                        <button type="button" class="btn btn-sm btn-light border py-0 px-2 small quick-prompt" data-text="Suggest a new production rule for electric vehicles driving in sub-zero freezing weather.">
+                            New EV Winter Rule
+                        </button>
+                        <button type="button" class="btn btn-sm btn-light border py-0 px-2 small quick-prompt" data-text="Why does an emergency report strictly supersede road closure and congestion advisories?">
+                            Emergency Hierarchy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: System Rule Base Audit & Quick Actions -->
+        <div class="col-lg-5">
+            <!-- System Health Audit -->
+            <div class="card card-custom ai-card shadow-sm mb-4">
+                <div class="ai-header d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-shield-check text-primary me-2"></i>Full Rule Base AI Health Audit
+                    </h6>
+                    <button class="btn btn-sm btn-outline-primary" id="runKbAuditBtn">
+                        <i class="bi bi-arrow-repeat me-1"></i> Run Audit
+                    </button>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-secondary small mb-3">
+                        The AI analyzes your entire library of {{ categories | length }} knowledge domains to detect coverage blind spots, ambiguous rules, and prioritize enhancements.
+                    </p>
+                    <div id="aiAuditBox" class="ai-output-box" style="max-height: 380px; overflow-y: auto;">
+                        <div class="text-center py-4">
+                            <i class="bi bi-stars fs-1 text-primary d-block mb-2"></i>
+                            <h6 class="fw-bold text-dark">Run Rule Base Audit</h6>
+                            <p class="text-secondary small mb-3">Click 'Run Audit' above to evaluate all registered rules.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Rule Generation Shortcut -->
+            <div class="card card-custom shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="p-3 bg-primary-subtle text-primary rounded-3 fs-3">
+                            <i class="bi bi-plus-square"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Add Dynamic Rule to System</h6>
+                            <p class="text-secondary small mb-2">Want to add a new domain rule derived from AI recommendations?</p>
+                            <a href="{{ url_for('add_rule') }}" class="btn btn-sm btn-primary-custom">
+                                <i class="bi bi-arrow-right me-1"></i> Open Rule Authoring Form
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple markdown renderer
+    function renderMarkdown(md) {
+        if (!md) return '';
+        let html = md
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/^### (.*$)/gim, '<h5 class="fw-bold text-dark mt-2 mb-1">$1</h5>')
+            .replace(/^## (.*$)/gim, '<h4 class="fw-bold text-dark mt-2 mb-1">$1</h4>')
+            .replace(/^# (.*$)/gim, '<h3 class="fw-bold text-dark mt-2 mb-1">$1</h3>')
+            .replace(/^\> (.*$)/gim, '<blockquote class="border-start border-4 border-primary bg-light p-2 ps-3 my-2 text-dark small">$1</blockquote>')
+            .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+            .replace(/`([^`]+)`/gim, '<code class="bg-light px-1 py-0.5 rounded text-primary">$1</code>')
+            .replace(/^\s*\n\*/gim, '<ul>\n*')
+            .replace(/^[\*\-] (.*$)/gim, '<li>$1</li>')
+            .replace(/^\d+\.\s(.*$)/gim, '<li>$1</li>');
+        html = html.replace(/(<li>.*<\/li>)/gms, '<ul class="ps-3 mb-2">$1</ul>');
+        html = html.replace(/\n\n/g, '<br>');
+        return html;
+    }
+
+    // Chat functionality
+    const chatForm = document.getElementById('aiChatForm');
+    const chatInput = document.getElementById('userChatInput');
+    const chatMessages = document.getElementById('chatMessages');
+
+    function appendMessage(sender, text, isAi = false) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `d-flex align-items-start gap-2 mb-3 ${isAi ? '' : 'flex-row-reverse'}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = `p-2 rounded-circle shadow-sm text-white ${isAi ? 'bg-primary' : 'bg-dark'}`;
+        avatar.style.width = '32px';
+        avatar.style.height = '32px';
+        avatar.style.display = 'flex';
+        avatar.style.alignItems = 'center';
+        avatar.style.justifyContent = 'center';
+        avatar.style.fontSize = '0.85rem';
+        avatar.innerHTML = isAi ? '<i class="bi bi-stars"></i>' : '<i class="bi bi-person"></i>';
+
+        const bubble = document.createElement('div');
+        bubble.className = `p-3 rounded-3 shadow-sm border small ${isAi ? 'bg-white text-dark' : 'bg-primary text-white'}`;
+        bubble.style.maxWidth = '85%';
+        bubble.innerHTML = isAi ? renderMarkdown(text) : text;
+
+        msgDiv.appendChild(avatar);
+        msgDiv.appendChild(bubble);
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    if (chatForm && chatInput) {
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userMsg = chatInput.value.trim();
+            if (!userMsg) return;
+
+            appendMessage('You', userMsg, false);
+            chatInput.value = '';
+            chatInput.disabled = true;
+
+            // Loading placeholder
+            const loadingId = 'loading-' + Date.now();
+            const loadDiv = document.createElement('div');
+            loadDiv.id = loadingId;
+            loadDiv.className = 'd-flex align-items-start gap-2 mb-3';
+            loadDiv.innerHTML = `
+                <div class="p-2 bg-primary text-white rounded-circle shadow-sm" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;"><i class="bi bi-stars"></i></div>
+                <div class="p-3 bg-white text-secondary rounded-3 shadow-sm border small"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Consulting AI...</div>
+            `;
+            chatMessages.appendChild(loadDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const resp = await fetch('{{ url_for("api_ai_chat") }}', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ message: userMsg })
+                });
+                const data = await resp.json();
+                document.getElementById(loadingId)?.remove();
+                appendMessage('AI Advisor', data.reply || data.error, true);
+            } catch (err) {
+                document.getElementById(loadingId)?.remove();
+                appendMessage('AI Advisor', 'Connection error: ' + err.message, true);
+            } finally {
+                chatInput.disabled = false;
+                chatInput.focus();
+            }
+        });
+    }
+
+    // Quick prompt buttons
+    document.querySelectorAll('.quick-prompt').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (chatInput) {
+                chatInput.value = btn.getAttribute('data-text');
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+    });
+
+    // Run audit
+    const runAuditBtn = document.getElementById('runKbAuditBtn');
+    const auditBox = document.getElementById('aiAuditBox');
+    async function executeAudit() {
+        if (!auditBox) return;
+        auditBox.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="text-secondary small mt-2">AI is examining active production rules...</p>
+            </div>
+        `;
+        try {
+            const resp = await fetch('{{ url_for("api_analyze_kb") }}', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({})
+            });
+            const data = await resp.json();
+            auditBox.innerHTML = renderMarkdown(data.analysis || data.error);
+        } catch (e) {
+            auditBox.innerHTML = `<div class="alert alert-danger small">Error running audit: ${e.message}</div>`;
+        }
+    }
+
+    if (runAuditBtn) runAuditBtn.addEventListener('click', executeAudit);
+</script>
+{% endblock %}
